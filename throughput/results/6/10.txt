@@ -1,0 +1,60 @@
+BEGIN;
+BEGIN
+select
+	c_custkey,
+	c_name,
+	sum(l_extendedprice * (1 - l_discount)) as revenue,
+	c_acctbal,
+	n_name,
+	c_address,
+	c_phone,
+	c_comment
+from
+	customer,
+	orders,
+	lineitem,
+	nation
+where
+	c_custkey = o_custkey
+	and l_orderkey = o_orderkey
+	and o_orderdate >= date '1994-12-01'
+	and o_orderdate < cast(date '1994-12-01' + interval '3 month' as date)
+	and l_returnflag = 'R'
+	and c_nationkey = n_nationkey
+group by
+	c_custkey,
+	c_name,
+	c_acctbal,
+	c_phone,
+	n_name,
+	c_address,
+	c_comment
+order by
+	revenue desc
+LIMIT 20;
+ c_custkey |       c_name       |     revenue      | c_acctbal |          n_name           |                c_address                 |     c_phone     |                                                     c_comment                                                      
+-----------+--------------------+------------------+-----------+---------------------------+------------------------------------------+-----------------+--------------------------------------------------------------------------------------------------------------------
+   1094246 | Customer#001094246 |  783918.60776082 |   2134.06 | ALGERIA                   | S5reMegvH2tbo3M1eC2Ju0f9Lty              | 10-720-260-5646 |  regular theodolites wake blithely enticing excuses! express pinto beans
+   1151788 | Customer#001151788 | 782557.709221847 |   6239.33 | RUSSIA                    | LSS2PK5huu MQpuJsCTjemz,TaDvrU           | 32-480-394-4999 | ecial packages haggle carefully regular accounts. slyly silent warhorses cajole at the blithely brave sheaves. b
+   1360267 | Customer#001360267 | 779547.897577918 |   5440.39 | GERMANY                   | YOM4X8g2QaOSmyIV8k pdAG fhiOLEL01He      | 17-536-743-9497 |  slyly regular requests. quickly pending pa
+   1378459 | Customer#001378459 | 749225.895244787 |   8029.02 | EGYPT                     | kLIMqQ7EBQGm4URewrB4G2D08mSjjsTAC5jHQ    | 14-978-568-3996 | . even packages maintain along the blithely bold theodolites. packages sleep carefully. carefully pending
+   1148497 | Customer#001148497 | 743454.226227272 |   7283.85 | EGYPT                     | JtJdkVYV wA6kU,2r9e                      | 14-809-177-7744 |  blithely express deposits integrate furiously regular pains. spec
+   1420090 | Customer#001420090 | 742784.697388067 |   6152.87 | RUSSIA                    | OjyIjWnUcraTQJnvSH6ey7tL12NyJrwtYKr9PcQf | 32-995-605-5838 | t hockey players sleep fluffily ironic dolphins! daringly unusual deposi
+   1250089 | Customer#001250089 |  742402.76843193 |   3744.47 | INDIA                     | dXC76T,J9XX,5lwjxmq                      | 18-226-180-7935 | . furiously even dolphins after the blithely bold packages boos
+    356233 | Customer#000356233 | 728010.525604027 |   5727.76 | KENYA                     | aw7ChW2czSD2jLUh6koVybS57ZoOtkuDwyuE     | 24-454-984-7058 | about the pinto beans. blithely bold deposits grow carefully against the slyly quiet theodolites. de
+    767185 | Customer#000767185 | 696322.624639288 |   4749.33 | CANADA                    | an2oPgGekk9tZpclUiwUvHc2gcrNjMTa,u       | 13-309-390-4441 | kages breach. slyly regular theo
+     17866 | Customer#000017866 | 687505.943012971 |   9191.53 | SAUDI ARABIA              | X GPgNCKvVTHQiBpMqkt6lv2tDfpMTz2msOArR   | 30-327-278-4622 | dolites are carefully blithely unusual t
+    372616 | Customer#000372616 | 684699.450345906 |   9309.01 | GERMANY                   | KUbhtpuAccYce5YcxGkBExnL0fk1NtXDCSV3     | 17-102-615-2140 |  use quickly express, ironic theodolites. bold accounts are. care
+   1231045 | Customer#001231045 | 678545.089874128 |   2771.73 | SAUDI ARABIA              | bDCDP66 ZmdVTT7wQTDHNZDAAi6ZH,n          | 30-191-819-4338 | kages. even dependencies x-ray according to the regular accounts. packages haggle final deposits. pinto beans a
+    124675 | Customer#000124675 | 678460.827853347 |    651.99 | JORDAN                    | kSBE NE4tFZpQLTEmPowQ ysl03PWUhAYwaly1c  | 23-836-242-3700 |  courts. special, dogged requests af
+    917098 | Customer#000917098 | 670865.573282679 |   1551.76 | PERU                      | ,3LHM4TA1vvry1r2uuTLd0w9,c               | 27-742-911-7866 | furiously ironic instructions. carefully regular warthogs instead of the furiously pending requests use blithely i
+    437239 | Customer#000437239 | 668995.240934276 |   1137.64 | ALGERIA                   | 5jBcsBXqtLi,tfZ49jcgnnKRd9NtgyuspYhQ     | 10-476-903-6029 | le slyly express foxes. carefully regular grouches was across the ideas. sl
+    203089 | Customer#000203089 | 667308.455850038 |    2321.2 | ETHIOPIA                  | k1a094Sq78v5Juk                          | 15-279-334-8025 | onic, final pinto beans. even theodolites sleep slyly. bold foxes wake furiously ironic pinto beans. 
+    559528 | Customer#000559528 | 663238.386434986 |   3101.77 | INDONESIA                 | wKwY8Bboxhw59lkVX15Xkrx                  | 19-802-894-7570 |  special escapades alongside of the bold excuses nag excuses. slyly regular requests use furiously final
+    452311 | Customer#000452311 | 663208.024989329 |   3782.08 | RUSSIA                    | HYUhFh1Rc4op2Z8KXjCrHcKCLhnHrjXlgv       | 32-835-948-2283 | lly across the furiously silent ideas. blithely regular accounts cajole carefully against the special accounts
+    836053 | Customer#000836053 | 662967.367729942 |    797.58 | IRAQ                      | bgrAjiqLn9UX3F                           | 21-267-394-7314 | ake furiously at the furiously regular theodolites. accounts kindle carefully along the slyly bold theodolites
+   1343617 | Customer#001343617 |  660036.70412458 |   8416.35 | ARGENTINA                 | PqTbTnV6dTJq5iVkqGczOW7smPTBC            | 11-198-959-8004 | out the regular, regular requests u
+(20 rows)
+
+COMMIT;
+COMMIT

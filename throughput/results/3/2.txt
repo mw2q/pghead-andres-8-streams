@@ -1,0 +1,152 @@
+BEGIN;
+BEGIN
+select
+	s_acctbal,
+	s_name,
+	n_name,
+	p_partkey,
+	p_mfgr,
+	s_address,
+	s_phone,
+	s_comment
+from
+	part,
+	supplier,
+	partsupp,
+	nation,
+	region
+where
+	p_partkey = ps_partkey
+	and s_suppkey = ps_suppkey
+	and p_size = 12
+	and p_type like '%COPPER'
+	and s_nationkey = n_nationkey
+	and n_regionkey = r_regionkey
+	and r_name = 'ASIA'
+	and ps_supplycost = (
+		select
+			min(ps_supplycost)
+		from
+			partsupp,
+			supplier,
+			nation,
+			region
+		where
+			p_partkey = ps_partkey
+			and s_suppkey = ps_suppkey
+			and s_nationkey = n_nationkey
+			and n_regionkey = r_regionkey
+			and r_name = 'ASIA'
+	)
+order by
+	s_acctbal desc,
+	n_name,
+	s_name,
+	p_partkey
+LIMIT 100;
+ s_acctbal |          s_name           |          n_name           | p_partkey |          p_mfgr           |                s_address                 |     s_phone     |                                              s_comment                                              
+-----------+---------------------------+---------------------------+-----------+---------------------------+------------------------------------------+-----------------+-----------------------------------------------------------------------------------------------------
+   9999.57 | Supplier#000034080        | CHINA                     |    834079 | Manufacturer#4            | vxF,7HtWSvVbLwomr5e1kFbOpxohWfvvWhmj     | 28-610-717-4809 | y ironic foxes. slyly regular accounts nag fluffily. special pinto beans may cajole c
+   9999.57 | Supplier#000034080        | CHINA                     |   1384053 | Manufacturer#5            | vxF,7HtWSvVbLwomr5e1kFbOpxohWfvvWhmj     | 28-610-717-4809 | y ironic foxes. slyly regular accounts nag fluffily. special pinto beans may cajole c
+   9997.21 | Supplier#000045318        | JAPAN                     |    745317 | Manufacturer#4            | BiLLOLswp8cfsoygolv0tfhC wg              | 22-208-264-2271 | integrate about the unusual, regular foxes. furiously furious packages wake
+   9997.21 | Supplier#000045318        | JAPAN                     |   1245317 | Manufacturer#3            | BiLLOLswp8cfsoygolv0tfhC wg              | 22-208-264-2271 | integrate about the unusual, regular foxes. furiously furious packages wake
+   9996.65 | Supplier#000041402        | CHINA                     |    866377 | Manufacturer#5            | YTO5 WxLYMSHpjhJ,h                       | 28-763-115-7623 | ular platelets are slyly about the furiously regular accounts. ironically un
+   9996.65 | Supplier#000041402        | CHINA                     |   1341401 | Manufacturer#1            | YTO5 WxLYMSHpjhJ,h                       | 28-763-115-7623 | ular platelets are slyly about the furiously regular accounts. ironically un
+   9996.48 | Supplier#000013889        | INDIA                     |    988879 | Manufacturer#3            | caxKXEeVHyAMnK,JCqc                      | 18-188-323-4709 | uests boost slyly. regular theodolites poach quickly silent d
+   9996.14 | Supplier#000031637        | VIETNAM                   |   1606620 | Manufacturer#4            | DZ8RCx5OKVmiIguU6E Q3aeCEBDIRVC8,9RhyGyT | 31-125-483-6437 | te. slyly ironic instructions use quickly quickly regular packages. slyly s
+   9991.32 | Supplier#000084065        | VIETNAM                   |   1759047 | Manufacturer#5            | CfJ,Bun49DmmJ                            | 31-355-724-3538 | ross the slyly regular excuses.
+   9985.21 | Supplier#000089184        | INDIA                     |    139181 | Manufacturer#3            | UDddwdcFTIM4FfVLg7NAuSZgb6               | 18-655-310-7257 | egular foxes according to the accounts haggle closely special excuses. carefully r
+   9983.37 | Supplier#000059439        | VIETNAM                   |   1984381 | Manufacturer#4            | Oqnr0n1VyiuuSNcXGu62hnw OSnYJ            | 31-634-513-2651 | al theodolites. furious packages boost carefully blithely final foxes. sl
+   9979.16 | Supplier#000085013        | CHINA                     |    834996 | Manufacturer#4            | idsVpyww52I1                             | 28-598-145-8849 | e special deposits. final requests caj
+   9978.67 | Supplier#000048753        | JAPAN                     |   1148752 | Manufacturer#1            | j57d9ScXZh7xjOCD3raimv                   | 22-453-942-4420 | ent asymptotes are blithely blithely re
+   9972.34 | Supplier#000061149        | CHINA                     |    711134 | Manufacturer#3            | M6D4yaI50I                               | 28-766-600-3051 | ess, regular instructions. express realms at the regular, final pinto beans haggle 
+    9969.6 | Supplier#000052704        | CHINA                     |     27703 | Manufacturer#1            | k ,Cg0vnBRrybxl06UsXrvkl7dS5TKzixbOK7bj  | 28-302-134-3288 | ly carefully blithe sheaves. pinto beans believe carefully carefully express
+    9969.6 | Supplier#000052704        | CHINA                     |    377694 | Manufacturer#5            | k ,Cg0vnBRrybxl06UsXrvkl7dS5TKzixbOK7bj  | 28-302-134-3288 | ly carefully blithe sheaves. pinto beans believe carefully carefully express
+   9962.15 | Supplier#000092435        | JAPAN                     |   1517389 | Manufacturer#4            | KC47BfKreb sdmWqD7A5H80                  | 22-970-839-5452 | lly final requests nag slyly pending deposits! dependencies boost busy sentiments. idle p
+   9961.58 | Supplier#000030247        | INDIA                     |    580236 | Manufacturer#2            | NCBeIFhm0msmQpQlYm9jNU1HZvOFCs06OpQ      | 18-294-166-5475 |  even theodolites boost quickly. carefully unusual
+   9955.72 | Supplier#000056717        | INDONESIA                 |   1006696 | Manufacturer#4            | zFwNx3c2wnLkDut8,tKmfUFGbPBqd            | 19-286-676-3461 | usly regular dugouts. blithely silent excuses according to the carefully
+   9953.38 | Supplier#000057593        | VIETNAM                   |   1132581 | Manufacturer#1            | iNjhvQhTyVPBfEtVnm1VNLtqTC7OYIuFgW,QDZ   | 31-490-408-8259 | alongside of the slyly regular account
+   9949.49 | Supplier#000026904        | JAPAN                     |     76903 | Manufacturer#4            | cWMUTMYIAd9 O9Hubl43                     | 22-437-955-9373 |  blithely slyly final theodolites. carefully ironic packages are carefully. asymptotes nag furio
+   9949.49 | Supplier#000026904        | JAPAN                     |   1601887 | Manufacturer#1            | cWMUTMYIAd9 O9Hubl43                     | 22-437-955-9373 |  blithely slyly final theodolites. carefully ironic packages are carefully. asymptotes nag furio
+   9948.08 | Supplier#000013597        | CHINA                     |    663584 | Manufacturer#2            | D4FDrumx0iX1iR61WRTo                     | 28-887-104-2432 | unts. blithely special somas above the carefully regular pac
+   9947.34 | Supplier#000068246        | INDONESIA                 |    318239 | Manufacturer#1            | 47o2g39A9wcJCTOaQf7qo7fe                 | 19-125-676-9195 |  blithely. unusual, pending platelets use furiously furiously pending reques
+    9944.7 | Supplier#000041546        | CHINA                     |    291541 | Manufacturer#3            | HwSN2g5CfXLxh                            | 28-948-141-5452 |  packages. slyly unusual foxes
+   9941.49 | Supplier#000051846        | JAPAN                     |    651845 | Manufacturer#2            | hMNAFsWBSF                               | 22-503-303-6243 | ar asymptotes are carefully regular packages. slyly regular pinto b
+   9940.39 | Supplier#000066685        | CHINA                     |   1216660 | Manufacturer#5            | COKZqQVoXjCmYOnl9W                       | 28-839-363-2182 |  excuses. carefully regular accounts sleep blithely furiously silent frays. 
+   9925.92 | Supplier#000058999        | JAPAN                     |   1383959 | Manufacturer#3            | zDHkXvP9lvTQP5H                          | 22-714-514-9527 | arefully ironic pinto beans ab
+   9925.85 | Supplier#000024626        | INDIA                     |   1974587 | Manufacturer#2            | 2m2RLQ4AxZZOkf QAqyPNE3                  | 18-545-297-4152 | eodolites after the special, even packages are furiously blithely bold pinto beans. fina
+   9921.13 | Supplier#000083110        | INDONESIA                 |    208103 | Manufacturer#1            | L6OeQSdKe1LAuh5u 7TLYvSbxYcCrOpdVjoPeh   | 19-587-650-9546 | ely about the unusual, regular requests? silent foxes around the pe
+   9919.69 | Supplier#000019992        | VIETNAM                   |   1869955 | Manufacturer#2            |  ug1jFz8eKb8bEDOgeEkQ pwl83lsKC4ArTXar   | 31-645-234-7033 | deas. unusual, special requests alongside of the final, ironic r
+   9919.29 | Supplier#000031911        | INDIA                     |    581900 | Manufacturer#4            | t3758Y1q,QmyPcuMRzTTZG0gdnW              | 18-480-301-1724 |  instructions; final ideas detect slyly after the pending platelets. blithely r
+   9917.42 | Supplier#000041145        | VIETNAM                   |    591134 | Manufacturer#4            | e9JogzmOYbAm Ti0Nzi                      | 31-903-164-8128 | t. carefully even accounts will have to believe never special packages. ironic
+   9915.71 | Supplier#000048003        | INDIA                     |    322999 | Manufacturer#5            | UTxm,7XwtQmU6Qp7NWA9mpwR8hKtQxvrBkvzzT   | 18-588-978-4424 | the permanently even theodolites. 
+    9909.3 | Supplier#000017487        | CHINA                     |   1767452 | Manufacturer#4            | pIhAA3aBdwkllv                           | 28-328-846-1209 | daringly even packages. unusual, ironic ideas believe even reques
+   9907.07 | Supplier#000037647        | JAPAN                     |    912637 | Manufacturer#4            | LH51l5pE,gkcQeV49NNc5dBdHtOOGBKgcMV      | 22-683-613-5602 | es wake blithely. escapades wake after the slyly regular instructions. instruction
+   9907.07 | Supplier#000037647        | JAPAN                     |   1737646 | Manufacturer#4            | LH51l5pE,gkcQeV49NNc5dBdHtOOGBKgcMV      | 22-683-613-5602 | es wake blithely. escapades wake after the slyly regular instructions. instruction
+   9906.15 | Supplier#000075644        | INDONESIA                 |   1500598 | Manufacturer#2            | fW3zVZkTrdLV6AkTRFWsTwIOUr5k             | 19-307-294-9368 | horses haggle carefully. furiously regular deposits haggle boldl
+   9906.12 | Supplier#000064594        | INDIA                     |   1914555 | Manufacturer#5            | KkDoRCGq5ZRaNx0H                         | 18-766-667-6307 | s the slyly slow packages. slyly regular dependencies nag. sl
+   9905.18 | Supplier#000005032        | CHINA                     |    530016 | Manufacturer#4            | jIz N2Ybtuqj7J28jS,r1gZiw                | 28-856-977-3171 | g to the fluffily regular sentiments. slyly ironic foxes wake finally 
+   9904.76 | Supplier#000067366        | VIETNAM                   |    192362 | Manufacturer#5            | EN2IBNQYSZb                              | 31-660-623-9708 | ly final deposits use evenly pe
+   9904.76 | Supplier#000067366        | VIETNAM                   |    642359 | Manufacturer#5            | EN2IBNQYSZb                              | 31-660-623-9708 | ly final deposits use evenly pe
+   9902.02 | Supplier#000010234        | INDIA                     |    985224 | Manufacturer#1            | 7Vv4pqPjnHhH lt                          | 18-494-915-7425 | atelets. slyly ironic packages wake slyly regular ideas. even account
+   9901.74 | Supplier#000068539        | INDONESIA                 |   1943519 | Manufacturer#2            | IsstiHcNpNWqxdhZrz3R5v3fvQmlsF           | 19-750-868-4843 | e furiously slyly even deposits. regular accounts cajole blithely regul
+   9901.07 | Supplier#000081121        | INDONESIA                 |    531110 | Manufacturer#4            | bO6SRZVCq15HFERT1t9TJ5lBVF eHCrsUBfbj    | 19-720-378-1093 | efully regular instructions. carefully ironic deposits 
+   9899.36 | Supplier#000052766        | CHINA                     |   1477723 | Manufacturer#2            | 7jsKEjyrLEYYafIoPg9GRvEvdjRCaNVnxB       | 28-741-648-2906 | ickly blithely even attainme
+    9891.5 | Supplier#000097208        | VIETNAM                   |    922180 | Manufacturer#5            | fFvR2HbaPPTT2uIPgz8IHth w2a8Bl           | 31-734-272-8174 | t above the bold, even warhorses. reg
+   9887.27 | Supplier#000051208        | INDIA                     |    676189 | Manufacturer#2            | HrWvBd8xLaptIbbTz,eLNBAlMpRF6sBlLurfzQ   | 18-183-208-2711 | arefully unusual packages. silently regular requests grow fluffily. furiously express
+   9887.27 | Supplier#000051208        | INDIA                     |   1226195 | Manufacturer#1            | HrWvBd8xLaptIbbTz,eLNBAlMpRF6sBlLurfzQ   | 18-183-208-2711 | arefully unusual packages. silently regular requests grow fluffily. furiously express
+   9885.59 | Supplier#000077761        | VIETNAM                   |   1077760 | Manufacturer#5            | lfMbvbdIKbwos                            | 31-758-872-2225 | ise blithe, bold platelets! blithely even packages are blithely. unusual theodolites boost
+   9882.08 | Supplier#000048840        | CHINA                     |    448839 | Manufacturer#1            | qyeKmU1FicFQkrSIjkYDav1wZJPqBbyL8em1     | 28-567-645-6946 | ng, pending packages wake furiously quickly bold packages. quickly express dolphins cajole carefull
+   9882.08 | Supplier#000048840        | CHINA                     |    573824 | Manufacturer#2            | qyeKmU1FicFQkrSIjkYDav1wZJPqBbyL8em1     | 28-567-645-6946 | ng, pending packages wake furiously quickly bold packages. quickly express dolphins cajole carefull
+   9881.69 | Supplier#000084526        | INDONESIA                 |   1184525 | Manufacturer#1            | e6Go8skHt75hEx                           | 19-433-506-4872 | ve despite the silent packages. furiously quick requests boost across the fin
+   9879.64 | Supplier#000051935        | CHINA                     |   1676886 | Manufacturer#1            | yZO0O5TEhqFr4ciCkUvv6bi6MNNs             | 28-424-722-5135 | gedly final dolphins. slyly express pinto beans wake furi
+   9877.94 | Supplier#000043390        | JAPAN                     |   1843389 | Manufacturer#3            | qbnfrsdOfv IahJ  2kuQ eKw                | 22-697-622-7186 | onic deposits cajole slyly special foxes. quickly bold requests cajole blithely regular b
+   9877.25 | Supplier#000031810        | JAPAN                     |   1531809 | Manufacturer#5            | LwaXxAvtHZTF                             | 22-669-616-9605 | uriously regular requests. furiously spe
+   9877.25 | Supplier#000031810        | JAPAN                     |   1956752 | Manufacturer#5            | LwaXxAvtHZTF                             | 22-669-616-9605 | uriously regular requests. furiously spe
+   9870.51 | Supplier#000055258        | INDIA                     |   1730240 | Manufacturer#1            | nyrE VdrZWOJut6KpfMCDgH3PTv1sQulpdi2o    | 18-790-753-9228 | carefully bold accounts haggle slyly carefully even accounts. i
+    9869.6 | Supplier#000021260        | CHINA                     |   1471231 | Manufacturer#1            | 33fxhuECRJ7                              | 28-412-422-9336 | ructions. furiously ironic platelets are. fluffily even dep
+   9867.48 | Supplier#000063603        | CHINA                     |   1313576 | Manufacturer#1            | 9ELepYF28OurrQ4BB6RFMp00Be               | 28-252-886-7720 | al accounts haggle along the reg
+   9865.93 | Supplier#000035145        | INDONESIA                 |   1135144 | Manufacturer#2            | Jx95RHyQ82VhB uueA0tdtSK312icfbIbjyNB    | 19-710-182-4764 | olites: ironic, final theodolites integrate across the express, regular requests. 
+   9864.39 | Supplier#000093400        | VIETNAM                   |   1468385 | Manufacturer#5            | IU08sQeL XZQ3                            | 31-213-168-5493 |  mold. carefully even requests boost along the q
+   9863.47 | Supplier#000075399        | VIETNAM                   |    400386 | Manufacturer#1            | sPu3,8zsiGpv                             | 31-890-998-1869 | ckly ironic pinto beans. furiously enticing foxes abov
+   9862.92 | Supplier#000034887        | CHINA                     |   1034886 | Manufacturer#1            | w7Ikwew9kt5NDbmYAO2av7NVB9               | 28-735-181-5527 | o the excuses. slyly regular requests los
+    9855.5 | Supplier#000098784        | CHINA                     |    948765 | Manufacturer#4            | F2nmWLmTXHbLtOC4CkaX 3uFV0oUVBgMa        | 28-109-132-2406 | thely final ideas. quickly pending 
+   9855.14 | Supplier#000044994        | JAPAN                     |   1694961 | Manufacturer#1            | GNXGhUnrEHKesjOjWuqRCzzK Sury4e01v       | 22-787-835-8562 | e requests. special instructions thrash 
+   9853.29 | Supplier#000066038        | INDIA                     |    991010 | Manufacturer#3            | fArLExoerIIo5u8wvook1OR                  | 18-640-315-2219 | ly express deposits. pending packages about the fluffily ironi
+   9851.17 | Supplier#000059321        | INDIA                     |    534315 | Manufacturer#3            | WTPoKADdEwW8oWBe7c0O fUHRTzAH7kgHWdud    | 18-549-200-5505 | eposits will have to print closely
+   9846.37 | Supplier#000088391        | INDIA                     |    413378 | Manufacturer#1            | OyAMbXjjVaF4nAkel4evicvjCkoh J855gSD     | 18-934-653-6128 | ffix. bold pinto beans mold furiously alongside of the ironic accounts. cl
+   9845.71 | Supplier#000097422        | VIETNAM                   |   1097421 | Manufacturer#2            | eHiCfhIotncTl3B5ylBSPYCwP8bpvz6          | 31-930-544-6657 | gular, even accounts nag furiously even pinto beans. blithely ironic
+   9844.31 | Supplier#000073067        | JAPAN                     |    873066 | Manufacturer#5            | qxnO0cM3BMMDEC1UreC                      | 22-793-405-7811 |  ideas. carefully ironic request
+   9843.82 | Supplier#000093578        | VIETNAM                   |   1743543 | Manufacturer#4            | 4GLtsfrUobdktgS0g 23EKxYmvwyDSKr0ZRPYLz  | 31-681-847-4072 | ly final deposits. express dependencies sleep slyly according to the slyl
+   9838.71 | Supplier#000064886        | INDONESIA                 |    364885 | Manufacturer#4            | nBXacpPUKe                               | 19-532-308-8586 | ajole after the carefully
+   9838.57 | Supplier#000099788        | JAPAN                     |   1749753 | Manufacturer#3            | p0kZjWaMSgZCC                            | 22-110-195-8254 | ites sleep bold, final requests. quickly expres
+   9838.57 | Supplier#000099788        | JAPAN                     |   1974768 | Manufacturer#2            | p0kZjWaMSgZCC                            | 22-110-195-8254 | ites sleep bold, final requests. quickly expres
+   9836.87 | Supplier#000013108        | VIETNAM                   |    388104 | Manufacturer#4            | yHXEGHCf2loTWj0FwdiOxrVpOZpd,pOqtp       | 31-776-319-7719 | lites cajole regular, unusual theod
+   9833.23 | Supplier#000047254        | JAPAN                     |    222251 | Manufacturer#1            | 1F0,,iEn5XEFn4BvX                        | 22-314-882-6103 | beans haggle carefully ironic courts. furious
+   9833.23 | Supplier#000047254        | JAPAN                     |   1922234 | Manufacturer#3            | 1F0,,iEn5XEFn4BvX                        | 22-314-882-6103 | beans haggle carefully ironic courts. furious
+   9827.01 | Supplier#000061281        | CHINA                     |    861280 | Manufacturer#5            | JV,2it hvhgsVZGH4g                       | 28-678-396-3348 | etect furiously across the regular braids. unusual, express requests sublate furiously about the ac
+   9824.13 | Supplier#000067155        | CHINA                     |    192151 | Manufacturer#5            | DCBG1eRGFxkoFwgt7jpMJN9GF,uzoFL2re       | 28-290-366-6704 | ar instructions cajole carefully final packages. deposits boost furiously carefully unusual requ
+   9824.13 | Supplier#000067155        | CHINA                     |   1667154 | Manufacturer#4            | DCBG1eRGFxkoFwgt7jpMJN9GF,uzoFL2re       | 28-290-366-6704 | ar instructions cajole carefully final packages. deposits boost furiously carefully unusual requ
+   9822.34 | Supplier#000011303        | CHINA                     |   1286290 | Manufacturer#3            | kkHbYraaz9s5O1Ljroe                      | 28-173-422-4043 | ully final foxes. furiously unusual deposits cajole across the bold grouches-- bli
+   9822.08 | Supplier#000063051        | INDIA                     |   1938031 | Manufacturer#4            | AJdlUTD28NnFUHtFSxqVRCsPcCEv8x9Z KY      | 18-118-478-5944 | ithely. final packages cajole evenly. unusual requests believe fluffi
+   9812.64 | Supplier#000073589        | INDIA                     |   1798537 | Manufacturer#4            | rw7vPRViHnV nsMvtsOg4n1                  | 18-953-986-3339 | ly bold packages use furiously after the ironic dep
+   9811.14 | Supplier#000036336        | INDIA                     |   1861281 | Manufacturer#2            | z7V8LOnjmOQPbUAshrgcVAZEIJXjPFiAGyfgO7   | 18-627-375-6572 |  by the instructions. dolphins x-ray thinly even notornis. carefully thin 
+   9810.48 | Supplier#000023446        | VIETNAM                   |    948418 | Manufacturer#2            | UQm5L6GxMencT1LgbQbY,gtUIYCkPb8p6kpdMH   | 31-626-409-9294 | sits. fluffily ironic requests nag slyly blithely quiet
+   9807.04 | Supplier#000056204        | INDIA                     |   1556203 | Manufacturer#3            | C6yG3JHM8tdpjOGvWZEIh Rc                 | 18-308-710-6747 |  dependencies. furiously special foxes nag car
+   9806.12 | Supplier#000075484        | INDIA                     |    450479 | Manufacturer#5            | GhSor6D0suPVvDd43am6SlBD 5zOHxAP         | 18-732-909-2302 | ages wake idle multipliers. slyly pending id
+   9797.57 | Supplier#000092280        | INDONESIA                 |    367276 | Manufacturer#2            | 3yq37I9vHh8BEDUxJo3yGuu                  | 19-150-430-7590 |  the slyly silent deposits. ironic accounts wake carefully final p
+   9797.57 | Supplier#000092280        | INDONESIA                 |    717258 | Manufacturer#5            | 3yq37I9vHh8BEDUxJo3yGuu                  | 19-150-430-7590 |  the slyly silent deposits. ironic accounts wake carefully final p
+   9794.83 | Supplier#000009308        | CHINA                     |   1309307 | Manufacturer#4            | yV4zFJaBvx9P5wLH7,                       | 28-854-703-2869 | l packages boost always slyly
+   9793.12 | Supplier#000095981        | INDONESIA                 |    995980 | Manufacturer#5            | oBr6LI4TUD3mqPRHnhNYivzKsm DgcYvsd bjaS  | 19-506-672-6024 | lose. furiously enticing deposits wake carefully. slyly final asymp
+   9784.19 | Supplier#000002216        | JAPAN                     |    527200 | Manufacturer#5            | 8 AciCfJsC6l2PC3ELfiFMCJDSswf            | 22-260-421-5259 | e sometimes special attainments. quickly regular deposits amon
+   9782.11 | Supplier#000088197        | INDONESIA                 |    913169 | Manufacturer#5            | QGcWDZW80i7                              | 19-454-680-8615 | quests cajole alongside of the slyly final deposits. slyly even accoun
+   9776.16 | Supplier#000032700        | VIETNAM                   |   1957642 | Manufacturer#2            | 3wpQiTjGW4EqHFj2F6RL9k7e                 | 31-954-682-2611 |  accounts. unusual, ironic pearls are among the pending i
+   9775.97 | Supplier#000043486        | JAPAN                     |    218483 | Manufacturer#4            | xwL7sdICjUUvdwfgeLTjYIF,s4z6Gjdhu4sVvPDq | 22-137-722-2592 | s are against the fluffily special ideas. finally ironic platelets detect slyly. sp
+   9775.97 | Supplier#000043486        | JAPAN                     |   1168452 | Manufacturer#2            | xwL7sdICjUUvdwfgeLTjYIF,s4z6Gjdhu4sVvPDq | 22-137-722-2592 | s are against the fluffily special ideas. finally ironic platelets detect slyly. sp
+   9775.58 | Supplier#000059901        | JAPAN                     |   1384861 | Manufacturer#5            | leXk,8DkjkWKMduEEu3PvQ8BYF               | 22-168-932-9428 | nal requests should affix blithel
+   9775.55 | Supplier#000057152        | JAPAN                     |   1857151 | Manufacturer#1            | 3S6Nam4uCHE569MxONtb2LN8Y                | 22-831-549-6003 | ecial pinto beans unwind slyly fluffily silent epitaphs. furiously special instruction
+   9773.09 | Supplier#000061813        | INDONESIA                 |   1386773 | Manufacturer#1            | ol5GMXLI5EhFbQrS859GrQm tPZADRvRheujZ    | 19-677-700-6128 | accounts. even frays sleep blithely. unusual deposits snooze across the bold, bold package
+(100 rows)
+
+COMMIT;
+COMMIT

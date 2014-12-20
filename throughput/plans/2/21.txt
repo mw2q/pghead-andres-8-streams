@@ -1,0 +1,79 @@
+BEGIN;
+BEGIN
+EXPLAIN
+select
+	s_name,
+	count(*) as numwait
+from
+	supplier,
+	lineitem l1,
+	orders,
+	nation
+where
+	s_suppkey = l1.l_suppkey
+	and o_orderkey = l1.l_orderkey
+	and o_orderstatus = 'F'
+	and l1.l_receiptdate > l1.l_commitdate
+	and exists (
+		select
+			*
+		from
+			lineitem l2
+		where
+			l2.l_orderkey = l1.l_orderkey
+			and l2.l_suppkey <> l1.l_suppkey
+	)
+	and not exists (
+		select
+			*
+		from
+			lineitem l3
+		where
+			l3.l_orderkey = l1.l_orderkey
+			and l3.l_suppkey <> l1.l_suppkey
+			and l3.l_receiptdate > l3.l_commitdate
+	)
+	and s_nationkey = n_nationkey
+	and n_name = 'MOROCCO'
+group by
+	s_name
+order by
+	numwait desc,
+	s_name
+LIMIT 100;
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=1951779.36..1951779.36 rows=1 width=26)
+   ->  Sort  (cost=1951779.36..1951779.36 rows=1 width=26)
+         Sort Key: (count(*)), supplier.s_name
+         ->  HashAggregate  (cost=1951779.34..1951779.35 rows=1 width=26)
+               Group Key: supplier.s_name
+               ->  Nested Loop Anti Join  (cost=2443.74..1951779.33 rows=1 width=26)
+                     ->  Nested Loop Semi Join  (cost=2443.17..1951778.02 rows=1 width=34)
+                           Join Filter: (orders.o_orderkey = l2.l_orderkey)
+                           ->  Nested Loop  (cost=2442.61..1432209.06 rows=388880 width=38)
+                                 ->  Hash Join  (cost=2442.17..1010766.75 rows=800609 width=34)
+                                       Hash Cond: (l1.l_suppkey = supplier.s_suppkey)
+                                       ->  Index Scan using lineitem_l_orderkey_idx_part1 on lineitem l1  (cost=0.56..925261.97 rows=20015223 width=8)
+                                       ->  Hash  (cost=2391.61..2391.61 rows=4000 width=30)
+                                             ->  Nested Loop  (cost=79.29..2391.61 rows=4000 width=30)
+                                                   ->  Seq Scan on nation  (cost=0.00..1.31 rows=1 width=4)
+                                                         Filter: (n_name = 'MOROCCO'::bpchar)
+                                                   ->  Bitmap Heap Scan on supplier  (cost=79.29..2350.29 rows=4000 width=34)
+                                                         Recheck Cond: (s_nationkey = nation.n_nationkey)
+                                                         ->  Bitmap Index Scan on supplier_s_nationkey_s_suppkey_idx  (cost=0.00..78.29 rows=4000 width=0)
+                                                               Index Cond: (s_nationkey = nation.n_nationkey)
+                                 ->  Index Scan using orders_o_orderkey_o_orderdate_idx on orders  (cost=0.43..0.52 rows=1 width=4)
+                                       Index Cond: (o_orderkey = l1.l_orderkey)
+                                       Filter: (o_orderstatus = 'F'::bpchar)
+                           ->  Index Scan using lineitem_l_orderkey_idx on lineitem l2  (cost=0.56..1.15 rows=15 width=8)
+                                 Index Cond: (l_orderkey = l1.l_orderkey)
+                                 Filter: (l_suppkey <> l1.l_suppkey)
+                     ->  Index Scan using lineitem_l_orderkey_idx_part1 on lineitem l3  (cost=0.56..0.91 rows=5 width=8)
+                           Index Cond: (l_orderkey = l1.l_orderkey)
+                           Filter: (l_suppkey <> l1.l_suppkey)
+ Planning time: 8.696 ms
+(30 rows)
+
+COMMIT;
+COMMIT

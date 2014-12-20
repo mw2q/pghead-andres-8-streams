@@ -1,0 +1,60 @@
+BEGIN;
+BEGIN
+select
+	c_custkey,
+	c_name,
+	sum(l_extendedprice * (1 - l_discount)) as revenue,
+	c_acctbal,
+	n_name,
+	c_address,
+	c_phone,
+	c_comment
+from
+	customer,
+	orders,
+	lineitem,
+	nation
+where
+	c_custkey = o_custkey
+	and l_orderkey = o_orderkey
+	and o_orderdate >= date '1993-09-01'
+	and o_orderdate < cast(date '1993-09-01' + interval '3 month' as date)
+	and l_returnflag = 'R'
+	and c_nationkey = n_nationkey
+group by
+	c_custkey,
+	c_name,
+	c_acctbal,
+	c_phone,
+	n_name,
+	c_address,
+	c_comment
+order by
+	revenue desc
+LIMIT 20;
+ c_custkey |       c_name       |     revenue      | c_acctbal |          n_name           |                c_address                |     c_phone     |                                                    c_comment                                                    
+-----------+--------------------+------------------+-----------+---------------------------+-----------------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------
+     91750 | Customer#000091750 | 897585.222208702 |   2263.56 | JORDAN                    | T9q8xOhmcCcQqJrUn48WLKtP3v              | 23-745-926-4249 | detect ironically pinto beans! un
+    895447 | Customer#000895447 | 811718.692116715 |    8245.6 | MOROCCO                   | 4Hl,9Ev ooqOIns                         | 25-230-557-7693 | k packages. furiously regular courts
+    250621 | Customer#000250621 | 808292.247358851 |   9504.16 | MOZAMBIQUE                | BayuL1u9uyKoB8r                         | 26-777-826-7330 |  instructions. even, even platelets up the carefully pending platelets 
+   1477261 | Customer#001477261 | 800324.078425612 |   8214.14 | ETHIOPIA                  | Ug4Chh6HgFuFuH4kKuDX,y                  | 15-477-193-2424 | ticingly around the furiously unusual foxes. expre
+    212572 | Customer#000212572 | 789456.796870592 |   8547.27 | ROMANIA                   | T4oVPpSC8eDs,sV01Rpjxb,SCkiBLv30imj     | 29-422-120-4420 | d the furiously regular packages.
+   1368802 | Customer#001368802 | 765573.895906541 |   5541.67 | INDIA                     | DYQGqx37DKyIGkewiZypC2GjKyIUbnH         | 18-558-141-8062 | ly unusual deposits after the slyly final escapades are dependencies. bli
+   1316665 | Customer#001316665 | 755989.348333353 |   8961.81 | UNITED STATES             | qE4InTkivYGQ                            | 34-922-395-8805 | ully regular accounts alongside of the fluffily final f
+   1373161 | Customer#001373161 | 737374.517981643 |    2991.9 | VIETNAM                   | 0lcXkGqt9buy3cx5QfQ 1UTfrV              | 31-606-875-1887 | st slyly about the express, pending deposits. silent, final accounts eat beneath the 
+   1397014 | Customer#001397014 | 729122.827859747 |   9982.46 | ALGERIA                   | Y7p0baPO5kJg2F1QsLS53GwkQ               | 10-171-382-3819 | efully ironic accounts. expres
+   1295665 | Customer#001295665 | 709432.466608041 |   6397.02 | GERMANY                   | epfI5ELzAGPMShk                         | 17-171-512-3966 | n dolphins. carefully regular epitaphs 
+    482233 | Customer#000482233 |  694583.03473135 |   1269.29 | ARGENTINA                 | U3q xkKNSvZCzIPDOkBClr0y1m 4            | 11-284-754-6898 | pinto beans. thin theodolites use quickly along the daringly ironic ideas. unusual, even theod
+    248683 | Customer#000248683 | 693529.450609807 |   5485.61 | MOROCCO                   | peZLHNvP Lyw3mlVAgOiD5haj               | 25-663-412-5020 | to wake blithely furiously regular theodolites. bravely regular packages about the carefully even
+    927469 | Customer#000927469 | 690027.702068547 |   1342.66 | ARGENTINA                 | t15yHsWYkEg41j1751YD,1 BKLA40           | 11-490-631-4649 | asymptotes haggle carefully sometimes bold ideas. always sile
+    178537 | Customer#000178537 | 684411.868746328 |   6757.93 | INDIA                     | scWu51lYaXtJnKxB3C,utHvEiljf2f          | 18-864-338-6195 | ideas. fluffily even deposits after the ironic instruction
+   1010959 | Customer#001010959 | 679411.405734081 |   9535.13 | GERMANY                   | XDdduXrRTvp vvaaL9rkIT3uBLUsewM         | 17-165-753-4044 | ending accounts thrash furiously final, regula
+   1316338 | Customer#001316338 | 678372.187129618 |   8682.95 | INDIA                     | bfz3FH  qaULsV7oiCn66z6ezkZBpcl         | 18-793-610-3832 | equests. regular, even excuses doze slyly against the blithely even accounts. slyly regular dinos 
+    746197 | Customer#000746197 | 675473.855087115 |   8825.09 | UNITED STATES             | c35GFhl5WmNbgQQCy5IOzm3a5C8kRi9tvxQH    | 34-745-139-7666 | ven asymptotes lose after the unusual, final accounts. requests along the regular packages affix fluffily even,
+   1345237 | Customer#001345237 | 672196.436215547 |   6905.22 | FRANCE                    | bhu14nxGOuDn2FldK6kidxkQt               | 16-133-279-4001 | s according to the express, unusual acc
+   1379248 | Customer#001379248 | 671807.718028094 |   5063.16 | ETHIOPIA                  | V T3o7BwZzuWPxPLGHiva7kkCatwI7CU6B,XK   | 15-537-489-3328 | special accounts; fluffily final forges are furiously regular foxes. r
+    161335 | Customer#000161335 | 671408.207923852 |   -795.62 | GERMANY                   | Ytgof8nBcGU70JUSXnyvC9H,W ofzipQSs J, a | 17-930-340-3749 | sits. ironic theodolites about the furiously regular requests cajole bravely pending platelets. platelets lose
+(20 rows)
+
+COMMIT;
+COMMIT
